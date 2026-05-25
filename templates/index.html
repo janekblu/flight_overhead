@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Overhead</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; background: #fff; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── top bar ── */
+    #topbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 36px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .topbar-text {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #ccc;
+    }
+
+    /* ── main card ── */
+    #card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 36px;
+      transition: opacity 0.4s ease;
+    }
+
+    /* ── route section ── */
+    #route-section {
+      flex: 2;
+      display: flex;
+      align-items: center;
+      padding: 20px 0 16px;
+    }
+
+    .airport { display: flex; flex-direction: column; gap: 6px; }
+    .airport.right { text-align: right; align-items: flex-end; }
+
+    .airport-code {
+      font-family: 'Outfit', sans-serif;
+      font-size: 88px;
+      font-weight: 600;
+      line-height: 1;
+      color: #0a0a0a;
+      letter-spacing: -1px;
+    }
+    .airport-name {
+      font-size: 13px;
+      font-weight: 300;
+      color: #aaa;
+      letter-spacing: 0.5px;
+      max-width: 240px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .route-connector {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 0 28px 20px;
+    }
+    .plane-icon {
+      font-size: 20px;
+      transition: transform 0.8s ease;
+    }
+    .route-line {
+      width: 100%;
+      height: 1px;
+      background: #e8e8e8;
+      position: relative;
+    }
+    .route-dot {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      background: #1a56db;
+      border-radius: 50%;
+      top: -3px;
+      animation: travel 5s linear infinite;
+    }
+    @keyframes travel {
+      from { left: 0%; opacity: 1; }
+      85%  { opacity: 1; }
+      to   { left: 100%; opacity: 0; }
+    }
+
+    /* ── divider ── */
+    .divider { height: 1px; background: #f2f2f2; margin: 0 -36px; }
+
+    /* ── details ── */
+    #details-section {
+      flex: 2;
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr 1px 1fr;
+      align-items: center;
+    }
+
+    .col-sep {
+      height: 55%;
+      width: 1px;
+      background: #f0f0f0;
+      align-self: center;
+    }
+
+    .detail-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px 28px;
+    }
+    .detail-col.right { align-items: flex-end; text-align: right; }
+
+    .detail-label {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: #ccc;
+    }
+
+    #airline-logo {
+      height: 150px;
+      width: auto;
+      max-width: 140px;
+      object-fit: contain;
+    }
+    .detail-value {
+      font-size: 18px;
+      font-weight: 400;
+      color: #1a1a1a;
+    }
+
+    .alt-display {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+    }
+    .fl-label {
+      font-size: 18px;
+      font-weight: 300;
+      color: #bbb;
+    }
+    #flight-level {
+      font-family: 'Outfit', sans-serif;
+      font-size: 72px;
+      font-weight: 600;
+      color: #0a0a0a;
+      line-height: 1;
+    }
+    #status-badge {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #1a56db;
+      border: 1px solid #dce8ff;
+      border-radius: 20px;
+      padding: 3px 12px;
+      background: #f4f8ff;
+      align-self: flex-start;
+    }
+
+    /* ── footer ── */
+    #footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-top: 1px solid #f2f2f2;
+    }
+    #callsign {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #ccc;
+    }
+    #clock {
+      font-family: 'Outfit', sans-serif;
+      font-size: 30px;
+      font-weight: 300;
+      color: #bbb;
+      letter-spacing: 4px;
+    }
+
+    /* ── empty state ── */
+    #empty-state {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    #empty-icon { font-size: 48px; opacity: 0.12; }
+    #empty-text { font-size: 11px; letter-spacing: 4px; color: #ccc; }
+    #empty-sub {
+      font-family: 'Outfit', sans-serif;
+      font-style: italic;
+      font-size: 16px;
+      color: #ddd;
+    }
+  </style>
+</head>
+<body>
+
+<div id="topbar">
+  <span class="topbar-text" id="range-count">CONNECTING</span>
+  <span class="topbar-text" id="last-update"></span>
+</div>
+
+<div id="card">
+
+  <div id="route-section">
+    <div class="airport">
+      <div class="airport-code" id="origin-code">—</div>
+      <div class="airport-name" id="origin-name"></div>
+    </div>
+    <div class="route-connector">
+      <div class="plane-icon" id="plane-icon">✈</div>
+      <div class="route-line"><div class="route-dot"></div></div>
+    </div>
+    <div class="airport right">
+      <div class="airport-code" id="dest-code">—</div>
+      <div class="airport-name" id="dest-name"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div id="details-section">
+
+    <div class="detail-col">
+      <div class="detail-label">AIRLINE</div>
+      <img id="airline-logo"
+           src="/static/placeholder_logo.svg"
+           alt="Airline logo"
+           onerror="this.src='/static/placeholder_logo.svg'">
+      <div class="detail-value" id="airline-name">—</div>
+    </div>
+
+    <div class="col-sep"></div>
+
+    <div class="detail-col" style="align-items:center;text-align:center;">
+      <div class="detail-label">ALTITUDE</div>
+      <div class="alt-display">
+        <span class="fl-label">th. ft</span>
+        <span id="flight-level">—</span>
+      </div>
+      <div id="status-badge">—</div>
+    </div>
+
+    <div class="col-sep"></div>
+
+    <div class="detail-col right">
+      <div class="detail-label">AIRCRAFT</div>
+      <div class="detail-value" id="aircraft-type">—</div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div id="footer">
+    <span id="callsign"></span>
+    <span id="clock">00:00:00</span>
+  </div>
+
+</div>
+
+<div id="empty-state">
+  <div id="empty-icon">✈</div>
+  <div id="empty-text">NO AIRCRAFT IN RANGE</div>
+  <div id="empty-sub">the sky is clear</div>
+</div>
+
+<script>
+  // ── clock ──
+  function tickClock() {
+    document.getElementById('clock').textContent =
+      new Date().toTimeString().slice(0, 8);
+  }
+  setInterval(tickClock, 1000);
+  tickClock();
+
+  let lastCallsign = null;
+
+  function renderFlight(f) {
+    const card  = document.getElementById('card');
+    const empty = document.getElementById('empty-state');
+    empty.style.display = 'none';
+    card.style.display  = 'flex';
+
+    if (f.callsign !== lastCallsign) {
+      card.style.opacity = '0';
+      setTimeout(() => card.style.opacity = '1', 50);
+      lastCallsign = f.callsign;
+    }
+
+    // route — codes come from OpenSky, names from adsbdb
+    document.getElementById('origin-code').textContent  = f.origin      || '???';
+    document.getElementById('origin-name').textContent  = f.origin_name || '';
+    document.getElementById('dest-code').textContent    = f.destination  || '???';
+    document.getElementById('dest-name').textContent    = f.destination_name || '';
+
+    // rotate ✈ to heading (icon points east = 90°, so offset by -90)
+    document.getElementById('plane-icon').style.transform =
+      `rotate(${(f.heading || 0) - 90}deg)`;
+
+    // airline
+    document.getElementById('airline-name').textContent = f.airline_name || '—';
+    const logo = document.getElementById('airline-logo');
+    logo.src = f.airline_iata
+      ? `https://pics.avs.io/200/200/${f.airline_iata}.png`
+      : '/static/placeholder_logo.svg';
+
+    // altitude
+    const fl = (f.altitude_ft && f.altitude_ft > 500)
+      ? (f.altitude_ft / 1000).toFixed(1) : '—';
+    document.getElementById('flight-level').textContent = fl;
+    document.getElementById('status-badge').textContent = f.status || '—';
+
+    document.getElementById('aircraft-type').textContent =
+      f.aircraft_type || f.icao_type || '—';
+
+    document.getElementById('callsign').textContent = f.callsign;
+  }
+
+  function renderEmpty() {
+    document.getElementById('card').style.display        = 'none';
+    document.getElementById('empty-state').style.display = 'flex';
+    lastCallsign = null;
+  }
+
+  function refresh() {
+    fetch('/flights')
+      .then(r => r.json())
+      .then(data => {
+        const flights = data.flights || [];
+        document.getElementById('range-count').textContent =
+          flights.length ? `${flights.length} AIRCRAFT IN RANGE` : 'NO AIRCRAFT IN RANGE';
+        document.getElementById('last-update').textContent =
+          new Date().toTimeString().slice(0, 8);
+
+        // prefer flights with the most complete data
+        const best = flights.slice().sort((a, b) => {
+          const score = f =>
+            (f.origin ? 2 : 0) + (f.destination ? 2 : 0) + (f.airline_name ? 1 : 0);
+          return score(b) - score(a);
+        })[0];
+
+        best ? renderFlight(best) : renderEmpty();
+      })
+      .catch(() => {
+        document.getElementById('range-count').textContent = 'CONNECTION ERROR';
+      });
+  }
+
+  refresh();
+  setInterval(refresh, 10000);
+</script>
+</body>
+</html>

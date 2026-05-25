@@ -1,0 +1,18 @@
+<svg viewBox="0 0 160 260" xmlns="http://www.w3.org/2000/svg">
+  <!-- fuselage -->
+  <ellipse cx="80" cy="130" rx="11" ry="108" fill="#d8d8d8"/>
+  <!-- nose cone -->
+  <ellipse cx="80" cy="28" rx="9" ry="16" fill="#c8c8c8"/>
+  <!-- left wing -->
+  <path d="M72,100 L4,152 L6,161 L72,118 Z" fill="#c0c0c0"/>
+  <!-- right wing -->
+  <path d="M88,100 L156,152 L154,161 L88,118 Z" fill="#c0c0c0"/>
+  <!-- left engine -->
+  <ellipse cx="26" cy="153" rx="7" ry="4" fill="#b0b0b0"/>
+  <!-- right engine -->
+  <ellipse cx="134" cy="153" rx="7" ry="4" fill="#b0b0b0"/>
+  <!-- left stabiliser -->
+  <path d="M72,210 L42,232 L43,238 L72,220 Z" fill="#bbb"/>
+  <!-- right stabiliser -->
+  <path d="M88,210 L118,232 L117,238 L88,220 Z" fill="#bbb"/>
+</svg>
